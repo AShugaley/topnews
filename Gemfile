@@ -23,7 +23,11 @@ gem 'uglifier'
 gem 'web-console', group: :development
 gem 'whenever'
 gem 'httparty'
+gem 'kaminari'
 
 group :test do
   gem 'webmock'
+  gem 'factory_bot'
+  gem 'faker'
+  gem 'rails-controller-testing'
 end

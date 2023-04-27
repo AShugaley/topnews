@@ -1,0 +1,19 @@
+<!-- app/views/users/show.html.erb -->
+<h1><%= @user.email %>'s Upvoted Stories</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>URL</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @upvoted_stories.each do |story| %>
+    <tr>
+      <td><%= story.title %></td>
+      <td><%= link_to story.url, story.url, target: "_blank" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
