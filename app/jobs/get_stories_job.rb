@@ -44,9 +44,11 @@ class GetStoriesJob < ApplicationJob
       story.url = story_data[:url]
     end
   end
+  
   def single_story_url(id)
     URL::HH_SINGLE_STORY::PREFIX + id.to_s + URL::HH_SINGLE_STORY::SUFFIX
   end
+  
   def fetch_and_store_story(story_id)
     response = HTTParty.get(single_story_url(story_id))
 
