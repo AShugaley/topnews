@@ -1,0 +1,35 @@
+<!-- app/views/stories/index.html.erb -->
+<h1>Top Hacker News Stories</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>URL</th>
+    <th>Upvotes</th>
+    <th>Action</th>
+    <th>Upvoted by</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @stories.each do |story| %>
+    <tr>
+      <td><%= story.title %></td>
+      <td><%= link_to story.url, story.url, target: "_blank" %></td>
+      <td><%= story.upvotes.count %></td>
+      <td>
+        <% if story.upvoted_by_users.include?(current_user) %>
+          Upvoted
+        <% else %>
+          <%= link_to "Upvote", upvote_story_path(story), method: :post %>
+        <% end %>
+      </td>
+      <td>
+        <%= story.upvoted_by_users.map(&:email).join(', ') %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+
+  <%= paginate @stories %>
+</table>
