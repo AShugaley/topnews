@@ -9,4 +9,8 @@ class User < ApplicationRecord
   def upvote_story(story)
     upvotes.create(story: story)
   end
+
+  def downvote_story(story)
+    upvotes.where(story: story).destroy_all
+  end
 end

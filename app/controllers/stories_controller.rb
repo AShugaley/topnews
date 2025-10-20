@@ -12,12 +12,25 @@ class StoriesController < ApplicationController
     redirect_to stories_path
   end
 
+  def downvote
+    story = Story.find(params[:id])
+    current_user.downvote_story(story)
+
+    redirect_to stories_path
+  end
+
   def upvoted
     @upvoted_stories = Story.select('stories.*, COUNT(upvotes.id) AS upvotes_count')
                             .joins(:upvotes)
                             .group('stories.id')
                             .order('upvotes_count DESC')
                             .page(params[:page]).per(20)
+  end
+
+  def refresh
+    Story.refresh_stories
+
+    redirect_to stories_path
   end
 end
 

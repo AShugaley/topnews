@@ -19,8 +19,8 @@
       <td><%= story.upvotes.count %></td>
       <td>
         <% if story.upvoted_by_users.include?(current_user) %>
-          Upvoted
-        <% else %>
+          <%= link_to "Downvote", downvote_story_path(story), method: :post %>
+      <% else %>
           <%= link_to "Upvote", upvote_story_path(story), method: :post %>
         <% end %>
       </td>
