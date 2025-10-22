@@ -1,6 +1,8 @@
 class Readable < ApplicationRecord
   self.abstract_class = true
 
+  Dir[Rails.root.join('app/models/**/*.rb')].each { |file| require_dependency file }
+
   validates :title, presence: true
   validates :isbn, presence: true, uniqueness: true
 
@@ -9,7 +11,9 @@ class Readable < ApplicationRecord
   end
 
   def self.isbn_lookup(isbn)
-    puts self.class.find(isbn: isbn)&.print_details
+    subclasses.each do |klass|
+      klass.find_by(isbn: isbn)&.print_details
+    end
   end
 
   def self.print_all
