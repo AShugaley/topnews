@@ -20,17 +20,31 @@ class StoriesController < ApplicationController
   end
 
   def upvoted
-    @upvoted_stories = Story.select('stories.*, COUNT(upvotes.id) AS upvotes_count')
-                            .joins(:upvotes)
-                            .group('stories.id')
+    @users = User.order(:email)
+
+
+    scope = Story.select('stories.*, COUNT(upvotes.id) AS upvotes_count')
+                 .joins(:upvotes)
+
+    scope = scope.where(upvotes: { user_id: params[:user_id] }) if params[:user_id].present? && params[:user_id] != 'all'
+
+    @upvoted_stories = scope.group('stories.id')
                             .order('upvotes_count DESC')
-                            .page(params[:page]).per(20)
+                            .page(params[:page])
+                            .per(20)
   end
 
   def refresh
     Story.refresh_stories
 
     redirect_to stories_path
+  end
+
+  def search
+    @search_param = params[:search_term]
+    @stories = Story.search(@search_param).page(params[:page]).per(20)
+
+    redirect_to stories_path, alert: "Story not found" if @stories.empty?
   end
 end
 

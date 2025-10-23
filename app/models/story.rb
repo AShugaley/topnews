@@ -6,6 +6,12 @@ class Story < ApplicationRecord
   has_many :upvotes
   has_many :upvoted_by_users, through: :upvotes, source: :user
 
+
+  def self.search(search_term)
+    return if search_term.empty?
+
+    where("title ~* ?", "\\y#{Regexp.escape(search_term)}\\y")
+  end
   def self.refresh_stories
     StoryLoader.fetch_and_save_stories
   end

@@ -10,8 +10,15 @@
   <body>
     <nav>
       <%= link_to "All Stories", root_path %> |
-      <%= link_to "Upvoted Stories", upvoted_stories_path %> |
+      <%= link_to "Upvoted by Me", upvoted_stories_path(user_id: current_user.id) %> |
+      <%= link_to "All Upvoted Stories", upvoted_stories_path %> |
       <%= link_to "Refresh Stories", refresh_stories_path, method: :post %> |
+
+      <%= form_with url: search_stories_path, method: :get, local: true do |f| %>
+        <%= f.text_field :search_term, placeholder: "Search stories...", value: params[:search_term] %>
+        <%= f.submit "Search" %>
+      <% end %> |
+
       <% if user_signed_in? %>
         <%= link_to "Sign Out", destroy_user_session_path, method: :delete %> |
         <%= link_to "My Profile", user_path(current_user) %>

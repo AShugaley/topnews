@@ -1,29 +1,15 @@
 <!-- app/views/stories/upvoted.html.erb -->
-<h1>Top Upvoted Stories</h1>
+<h1><%= "Top Stories Upvoted by \"#{ @upvoted_by }\"" %></h1>
+<%= form_with url: upvoted_stories_path, method: :get, local: true do |f| %>
+  <%= f.select :user_id,
+               options_for_select(
+                 [['All Users', 'all']] + @users.map { |u| [u.email, u.id] },
+                 params[:user_id] || 'all'
+               ) %>
+  <%= f.submit "Filter" %>
+<% end %>
+<%= render 'story_list', stories: @upvoted_stories %>
 
-<table>
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>URL</th>
-    <th>Upvotes</th>
-    <th>Upvoted by</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @upvoted_stories.each do |story| %>
-    <tr>
-      <td><%= story.title %></td>
-      <td><%= link_to story.url, story.url, target: "_blank" %></td>
-      <td><%= story.upvotes.size %></td>
-      <td>
-        <% story.upvoted_by_users.each do |user| %>
-          <%= user.email %><br>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
 
-<%= paginate @upvoted_stories %>
+
+

@@ -7,9 +7,12 @@ Rails.application.routes.draw do
       post :upvote
       post :downvote
     end
+    collection do
+      get :search
+      get :upvoted
+    end
   end
 
-  get 'upvoted_stories', to: 'stories#upvoted', as: :upvoted_stories
   post 'refresh_stories', to: 'stories#refresh', as: :refresh_stories
   resources :users, only: [:show]
 end
